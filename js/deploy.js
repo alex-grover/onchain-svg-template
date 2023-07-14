@@ -10,7 +10,7 @@ export default async function deploy(vm, pk, bytecode) {
     value: 0,
     gasLimit: 200_000_000_000,
     gasPrice: 1,
-    data: '0x' + bytecode.toString(),
+    data: '0x' + bytecode.toString('hex'),
     nonce: account.nonce,
   }
 

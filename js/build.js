@@ -23,7 +23,7 @@ async function main() {
   for (let i = 1; i < 256; i++) {
     const fileName = path.join(tempFolder, i + '.svg')
     console.log('Rendering', fileName)
-    const svg = await call(vm, address, abi, 'render', [i])
+    const svg = await call(vm, address, abi, 'renderImage', [i])
     await fs.writeFile(fileName, svg)
 
     // Throws on invalid XML

@@ -1,6 +1,9 @@
 import EventEmitter from 'node:events'
 import http from 'node:http'
 
+export const IMAGE_REGEX = /\/image\/(\d+)/
+export const ANIMATION_REGEX = /\/animation\/(\d+)/
+
 export default async function serve(handler) {
   const events = new EventEmitter()
 
@@ -15,9 +18,19 @@ export default async function serve(handler) {
     }
 
     if (req.url === '/') {
+      res.writeHead(302, { Location: '/image/1' }).end()
+      return
+    } else if (req.url === '/collection' || IMAGE_REGEX.test(req.url)) {
       res.writeHead(200)
-      handler().then(
+      handler(req.url).then(
         (content) => res.end(webpage(content)),
+        (error) => res.end(webpage(`<pre>${error.message}</pre>`))
+      )
+      return
+    } else if (ANIMATION_REGEX.test(req.url)) {
+      res.writeHead(200)
+      handler(req.url).then(
+        (content) => res.end(content),
         (error) => res.end(webpage(`<pre>${error.message}</pre>`))
       )
       return
